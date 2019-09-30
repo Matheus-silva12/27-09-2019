@@ -1,0 +1,53 @@
+enable 
+configure terminal
+hostname SW-22
+banner motd "ACESSO APENAS PARA PESSOAS AUTORIZADAS"
+enable secret SenhadaEnable
+nome de usuário privilégio MatheusC 15 senha secreta 1234567890
+nome de usuário privilégio MatheusL 15 senha secreta 1234567890
+nome de usuário privilégio MatheusS 15 senha secreta 1234567890
+nome de usuário Guilherme privilégio 15 senha secreta 1234567890
+nome de usuário privilégio Jadisson 15 senha secreta 1234567890
+ip domain-name peachanddaisy.local
+crypto key generate rsa general-keys modulus 1024
+line console 0
+login local
+exec-timeout 10
+line vty 0 15
+transport input ssh
+login local
+exec-timeout 10
+exit
+service password-encryption
+ip default-gateway 172.16.3.1
+vlan 10
+name VLAN10
+vlan 20
+name VLAN20
+vlan 100
+name GERENCIAMENTO
+interface fastEthernet 0/1
+switchport mode access
+switchport access vlan 10
+description PC-23
+interface fastEthernet 0/2
+switchport mode access
+switchport access vlan 20
+description PC-24
+interface fastEthernet 0/24
+switchport mode access
+switchport access vlan 100
+description SRV
+interface gigabitEthernet 0/1
+switchport mode trunk
+switchport trunk native vlan 99
+switchport trunk allowed vlan 10,20,99,100
+description TRUNK ROUTER
+interface vlan 10
+ip address 172.16.2.139 255.255.255.128
+interface vlan 20
+ip address 172.16.2.11 255.255.255.128
+interface vlan 100
+ip address 172.16.3.5 255.255.255.224
+no shutdown
+do wr
